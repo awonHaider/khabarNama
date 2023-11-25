@@ -9,6 +9,8 @@
     background-color: #f7f7f8;
   }
 
+ 
+
   .page_width {
     width: 1250px;
     margin: auto;
@@ -93,6 +95,7 @@
     justify-content: center;
     gap: 18px;
     margin-top: 20px;
+    text-decoration: none;
   }
 
   .right .right-form form button{
@@ -105,4 +108,11 @@
   color: #1d3557;
   font-weight: 500;
   font-size: 18px;
+  text-decoration: none;
+
+  }
+
+  .right .right-form  form button a{
+    text-decoration: none;
+    color: #1d3557;
   }

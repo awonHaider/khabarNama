@@ -9,13 +9,39 @@
 </head>
 
 <body>
+    <section class="userStatusSection">
+        <div class="page_width">
+        <div class="showLoggedIn">
+            <div class="left">
+                <p><?php
+                    session_start();
+                    if (isset($_SESSION["email"])) {
+                         echo '<p>Hello! ' . $_SESSION["email"] . '</p>';
+                    }
+                    ?>
+                </p>
+            </div>
+
+            <div class="right">
+                <?php
+                if (isset($_SESSION["email"])) {
+                    echo '<a href="./admin_dashboard.php">Go to Admin Dashboard</a>';
+                    echo ' | ';
+                    echo '<a href="./logout.php">(Log Out)</a>';
+                }
+                ?>
+
+            </div>
+        </div>
+        </div>
+    </section>
     <header>
         <div class="page_width">
             <div class="header-inner">
 
                 <div class="menu-nav">
                     <ul>
-                        <li><a href="./index.php">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="./news.php">News</a></li>
                     </ul>
                 </div>
@@ -26,8 +52,8 @@
 
                 <div class="reg-nav">
                     <ul>
-                        <li><button>Sign Up</button></li>
-                        <li><button>Log In</button></li>
+                        <li><button><a href="./signup.php">Sign Up</a></button></li>
+                        <li><button><a href="./login.php">Log In</a></button></li>
                     </ul>
                 </div>
             </div>
@@ -39,12 +65,12 @@
             <div class="news-categories">
                 <nav>
                     <ul>
-                        <li><a href="">Sports</a></li>
-                        <li><a href="">Technology</a></li>
-                        <li><a href="">Busines</a></li>
-                        <li><a href="">Waether</a></li>
-                        <li><a href="">Economic</a></li>
-                        <li><a href="">Current Affairs</a></li>
+                        <li><a href="news.php?category=Sports">Sports</a></li>
+                        <li><a href="news.php?category=Technology">Technology</a></li>
+                        <li><a href="news.php?category=Business">Business</a></li>
+                        <li><a href="news.php?category=Weather">Weather</a></li>
+                        <li><a href="news.php?category=Sports">Economics</a></li>
+                        <li><a href="news.php?category=Technology">Current Affairs</a></li>
 
                     </ul>
                 </nav>
@@ -53,7 +79,7 @@
     </section>
 
 
-    <div class="slider-container">
+    <!-- <div class="slider-container">
         <div class="slider">
             <div class="slide">
                 <div class="slide-content">
@@ -73,9 +99,53 @@
                     </div>
                 </div>
             </div>
-            <!-- Add more slides for additional posts -->
+        </div>
+    </div> -->
+
+    <div class="slider-container">
+        <div class="slider">
+            <?php
+            // Assuming you've established a database connection
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "khabarnama";
+
+            $connection = mysqli_connect($servername, $username, $password, $dbname);
+
+            if (!$connection) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $query = "SELECT * FROM posts";
+            $result = mysqli_query($connection, $query);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="slide">';
+                    // Linking each slide to the full post using an anchor tag
+                    echo '<a href="post.php?id=' . $row['post_id'] . '" class="post-link">';
+                    echo '<div class="slide-content">';
+                    echo '<div class="slide-img"><img src="' . $row['post_banner_img'] . '" alt=""></div>';
+                    echo '<div class="slide-text">';
+                    echo '<h2>' . $row['post_title'] . '</h2>';
+                    $content = $row['post_content'];
+                    if (strlen($content) > 150) {
+                        $content = substr($content, 0, 150) . "...";
+                    }
+                    echo '<p>' . $content . '</p>';
+                    echo '</div></div></a></div>';
+                }
+            } else {
+                echo "No posts available.";
+            }
+
+            mysqli_close($connection);
+            ?>
         </div>
     </div>
+
+
 
     <!-- <section class="section_margin">
         <div class="page_width">
@@ -188,62 +258,59 @@
 
 
     <section class="section_margin">
-    <div class="page_width">
-        <div class="latest-new">
-            <div class="latest-new-head">
-                <h2>Latest News!</h2>
-            </div>
+        <div class="page_width">
+            <div class="latest-new">
+                <div class="latest-new-head">
+                    <h2>Latest News!</h2>
+                </div>
 
-            <div class="latest-news-grid">
-                <!-- PHP code starts here -->
-                <?php
-                // Establish database connection
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "khabarnama";
+                <div class="latest-news-grid">
+                    <!-- PHP code starts here -->
+                    <?php
+                    // Establish database connection
+                    $servername = "localhost";
+                    $username = "root";
+                    $password = "";
+                    $dbname = "khabarnama";
 
-                // Create connection
-                $connection = mysqli_connect($servername, $username, $password, $dbname);
+                    // Create connection
+                    $connection = mysqli_connect($servername, $username, $password, $dbname);
 
-                // Check connection
-                if (!$connection) {
-                    die("Connection failed: " . mysqli_connect_error());
-                }
-
-                // Query to retrieve posts from the database
-                $query = "SELECT * FROM posts";
-                $result = mysqli_query($connection, $query);
-
-                // Check if query executed successfully
-                if ($result) {
-                    // Loop through retrieved posts
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        // Output HTML for each post dynamically
-                        echo '<div class="post_container">';
-                        echo '<div class="post_img"><img src="' . $row['post_banner_img'] . '" alt="Post Image"></div>';
-                        echo '<button>' . $row['post_category'] . '</button>';
-                        echo '<h3>' . $row['post_title'] . '</h3>';
-                        echo '<div class="post_author_details">';
-                        echo '<div class="author_img"><img src="' . $row['author_image'] . '" alt="Author Image"></div>';
-                        echo '<p>' . $row['author_name'] . '</p>';
-                        echo '<p>' . $row['post_date'] . '</p>';
-                        echo '</div></div>';
+                    if (!$connection) {
+                        die("Connection failed: " . mysqli_connect_error());
                     }
-                } else {
-                    // Handle errors if the query fails
-                    echo "Error retrieving posts: " . mysqli_error($connection);
-                }
 
-                // Close database connection
-                mysqli_close($connection);
-                ?>
-                <!-- PHP code ends here -->
+                    // Query to retrieve posts from the database
+                    $query = "SELECT * FROM posts";
+                    $result = mysqli_query($connection, $query);
 
+                    // Check if query executed successfully
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            // Output HTML for each post dynamically
+                            echo '<a href="post.php?id=' . $row['post_id'] . '" class="post_link">';
+                            echo '<div class="post_container">';
+                            echo '<div class="post_img"><img src="' . $row['post_banner_img'] . '" alt="Post Image"></div>';
+                            echo '<button>' . $row['post_category'] . '</button>';
+                            echo '<h3>' . $row['post_title'] . '</h3>';
+                            echo '<div class="post_author_details">';
+                            echo '<div class="author_img"><img src="' . $row['author_image'] . '" alt="Author Image"></div>';
+                            echo '<p>' . $row['author_name'] . '</p>';
+                            echo '<p>' . $row['post_date'] . '</p>';
+                            echo '</div></div>';
+                            echo '</a>';
+                        }
+                    } else {
+                        echo "No posts available.";
+                    }
+
+                    mysqli_close($connection);
+                    ?>
+                    <!-- PHP code ends here -->
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <footer class="site-footer">
         <div class="container">

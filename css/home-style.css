@@ -5,8 +5,7 @@
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-html,
-body {
+html,body {
   width: 100%;
   height: 100%;
 }
@@ -21,10 +20,34 @@ body {
   margin: 50px 0px;
 }
 
+.userStatusSection{
+  background-color: #dedbd2;
+
+}
+
+ .showLoggedIn  {
+  display: flex;
+  justify-content: space-between;
+  background-color: #dedbd2;
+  padding: 3px 0;
+}
+
+.showLoggedIn p , a{
+  color: #1d3557;
+}
+
+.showLoggedIn .right a{
+  text-decoration: none;
+}
+
+.showLoggedIn .right a:hover{
+color: #e63946;
+}
 /* Header */
 header {
   background-color: #1d3557;
 }
+
 .header-inner {
   display: flex;
   justify-content: space-between;
@@ -64,6 +87,19 @@ header {
   font-size: 16px;
   background-color: #dedbd2;
   color: #1d3557;
+  transition: background-color 0.3s ease;
+}
+
+.header-inner .reg-nav ul li button:hover {
+  background-color: #e63946;
+  color: #ffffff; /* Change text color on hover if needed */
+}
+
+
+.header-inner .reg-nav ul li button a{
+  text-decoration: none;
+  color: #1d3557;
+
 }
 
 /* Categories */
@@ -85,7 +121,6 @@ header {
 }
 
 /* Post Slider */
-
 .slider-container {
   width: 100%;
   overflow: hidden;
@@ -141,6 +176,10 @@ header {
   
 }
 
+.slide p{
+  text-align: justify;
+}
+
 .slide.active {
   display: block; /* Show active slide */
 }
@@ -164,10 +203,15 @@ header {
 .latest-new .latest-new-head {
   color: #1d3557;
 }
+
 .latest-new .latest-news-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
+}
+
+.latest-news-grid a{
+  text-decoration: none;
 }
 
 .latest-new .latest-news-grid .post_container {
